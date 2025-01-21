@@ -22,6 +22,9 @@ class Ads(models.Model):  #объявления
     text = models.TextField()
     # upload = models.FileField(upload_to='uploads/')
 
+    def preview(self):
+        return self.text[:124] + '...'
+
     def __str__(self):
         return self.title
 
