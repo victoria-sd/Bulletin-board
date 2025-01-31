@@ -6,5 +6,38 @@ Ads
 
 {% block content %}
 <h2>Все объявления</h2>
-{{ ads }}
+
+    {% if perms.ads.add_ads %}
+    <a href="{% url 'ads_create' %}">Добавить объявление</a>
+    {% endif %}
+
+   {% if ads %}
+       {% for ad in ads %}
+       <p style="text-align: left;"><span style="text-decoration: underline;">Заголовок</span>: {{ ad.title }}.</p>
+       <p style="text-align: left;"><span style="text-decoration: underline;">Описание</span>: {{ ad.text|truncatewords:20|safe }}</p>
+       <hr>
+       {% endfor %}
+   {% else %}
+       <h3>Объявлений нет!</h3>
+   {% endif %}
+
+{# Пагинация #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
 {% endblock content %}

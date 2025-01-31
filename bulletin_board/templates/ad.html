@@ -1,0 +1,37 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Ad
+{% endblock title %}
+
+{% block content %}
+<table>
+    <tr>
+        <td><h3>Заголовок</h3></td>
+        <td><h3>Текст</h3></td>
+    </tr>
+    <tr>
+        <td>{{ ad.title }}</td>
+        <td>{{ ad.text|safe }}</td>
+    </tr>
+</table>
+
+    {% if perms.ads.change_ads %}
+    <a href="{% url 'ads_update' pk=ad.id %}">Изменить объявление</a>
+    {% endif %}
+
+    <form method="POST" role="search">
+        {% csrf_token %}
+        <div id="contact" class="item" style="margin-top: 0px; padding: 30px 30px; width: 100%; max-width: 100%">
+            <span class="bid">
+              Оставить отклик<br>
+            </span>
+            <div class="line-dec"></div>
+            <textarea name="text" placeholder="Оставить отклик..." autocomplete="on" required style="border-radius: 10px;"> </textarea>
+          <span class="ends">
+            <button type="submit" id="form-submit" class="orange-button">Опубликовать</button>
+          </span>
+        </div>
+    </form>
+
+{% endblock content %}
