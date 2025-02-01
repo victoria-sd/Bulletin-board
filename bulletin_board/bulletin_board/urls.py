@@ -21,6 +21,8 @@ urlpatterns = ([
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('ads/', include('ads.urls')),
+    path("accounts/", include("accounts.urls")),  # Добавили эту строчку
     path("accounts/", include("allauth.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
     path('tinymce/', include('tinymce.urls')),
 ])

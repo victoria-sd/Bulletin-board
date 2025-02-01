@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from .forms import SignUpForm, AdsForm, ResponseForm
+from .forms import AdsForm, ResponseForm
 from .models import Ads
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -44,11 +44,5 @@ class AdsUpdate(PermissionRequiredMixin, UpdateView):
     model = Ads
     template_name = 'ads_create.html'
 
-
-class SignUp(CreateView):
-    model = User
-    form_class = SignUpForm
-    success_url = '/registration/activation'
-    template_name = 'registration/signup.html'
 
 

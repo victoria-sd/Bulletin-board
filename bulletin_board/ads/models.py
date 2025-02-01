@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
+import secrets
 
 
 class Ads(models.Model):  #объявления
@@ -38,5 +39,12 @@ class Response(models.Model):  #отклики на объявления
 
 
 class EmailKey(models.Model):
-    key = models.CharField(max_length=6)
+    code = models.CharField(max_length=6)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.code}'
+
+    @staticmethod
+    def generate_code():
+        return secrets.token_urlsafe(32)

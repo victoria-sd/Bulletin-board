@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+It is your profile!
+
+
+    <div class="card-body">
+
+      <p><strong>Username:</strong> {{ user.username }}</p><br><br>
+<!--      {% if profile.twitter %}-->
+<!--      <p><strong>Twitter:</strong> {{ profile.twitter }}</p><br><br>-->
+<!--      {% endif %}-->
+
+   {% if ads %}
+       {% for ad in ads %}
+       <p style="text-align: left;"><span style="text-decoration: underline;">Заголовок</span>: {{ ad.title }}.</p>
+       <p style="text-align: left;"><span style="text-decoration: underline;">Описание</span>: {{ ad.text|truncatewords:20|safe }}</p>
+       <hr>
+        {% endfor %}
+   {% endif %}
+
+{% for ad in ads %}
+        {% if user.id == profile.user.id %}
+            <p> {{ ad.title }} </p>
+<!--      <a href="{% url 'edit_user_profile' profile.id %}"><button class="button">Edit</button></a>-->
+        {% endif %}
+{% endfor %}
+
+    </div>
+
+{% endblock content %}
