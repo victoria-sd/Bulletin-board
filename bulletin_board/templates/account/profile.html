@@ -11,6 +11,7 @@ Profile
     <p>Email: {{ user.email }}</p>
 
     <h2>Ваши объявления</h2>
+    <h5><a href='{% url "response" %}'>Отклики</a></h5>
         <div class="ads-container">
             {% for ad in ads %}
             <div class="ad">
@@ -18,7 +19,7 @@ Profile
                     <div class="ad-text">
                         <p>{{ ad.text|safe }}</p>
                     </div>
-                    <small>Created at: {{ ad.created_at }}</small>
+                    <small>Создан: {{ ad.created_at }}</small>
 
                 <div class="ad-response">
                     <h4>Отклики</h4>
@@ -28,7 +29,7 @@ Profile
                                 {% if response.status %}
                                     <li>
                                         <p><strong>{{response.author.username}}:</strong> {{ response.text }}</p>
-                                        <small>Created at: {{ response.created_at }}</small>
+                                        <small>Создан: {{ response.created_at }}</small>
                                     </li>
                                 {% endif %}
                             {% endfor %}

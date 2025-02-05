@@ -11,15 +11,25 @@ Ads
     <a href="{% url 'ads_create' %}">Добавить объявление</a>
     {% endif %}
 
-   {% if ads %}
-       {% for ad in ads %}
-       <p style="text-align: left;"><span style="text-decoration: underline;">Заголовок</span>: {{ ad.title }}.</p>
-       <p style="text-align: left;"><span style="text-decoration: underline;">Описание</span>: {{ ad.text|safe }}</p>
-       <hr>
-       {% endfor %}
-   {% else %}
-       <h3>Объявлений нет!</h3>
-   {% endif %}
+    {% if ads %}
+        <div class="ads-container">
+            {% for ad in ads %}
+                <div class="ad">
+                    <h4><a href="{% url 'ads_detail' pk=ad.id %}">{{ ad.title }}</a></h4>
+                <div class="ad-text">
+                    <p>{{ ad.text|safe }}</p>
+                </div>
+                <small>Создано: {{ ad.created_at }}<br>
+                Автор: {{ ad.author }}
+                </small>
+                </div>
+            {% empty %}
+                <p>Пока нет объявлений.</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h3>Объявлений нет!</h3>
+    {% endif %}
 
 {# Пагинация #}
    {% if page_obj.has_previous %}

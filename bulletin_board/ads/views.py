@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
+from django.contrib import messages
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .forms import AdsForm, ResponseForm
 from .models import Ads
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 
@@ -12,7 +11,7 @@ class AdsList(ListView):
     ordering = '-created_at'
     template_name = 'ads.html'
     context_object_name = 'ads'
-    paginate_by = 2
+    paginate_by = 3
 
 
 class AdsDetail(DetailView):
@@ -28,6 +27,7 @@ class AdsDetail(DetailView):
             response.ad = ads
             response.author = self.request.user
             response.save()
+            messages.success(request, 'Ваш отклик отправлен. Он отобразится на главной странице после того, как автор примет его.')
         return redirect('ads_detail', pk=ads.pk)
 
 
