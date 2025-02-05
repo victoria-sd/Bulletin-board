@@ -1,4 +1,4 @@
-{% extends 'default.html' %}
+{% extends 'flatpages/default.html' %}
 
 {% block title %}
 Активация учетной записи
@@ -9,12 +9,22 @@
     <hr>
     <h1>Введите имя пользователя (логин) и пароль, полученный в письме.</h1>
     <hr>
-    <form action="{% url 'onetimecodeinput' %}" method="post">
-        {% csrf_token %}
-        <label for="username">Имя пользователя (логин): </label>
-        <input id="username" type="text" name="username">
-        <label for="code">Одноразовый код для активации: </label>
-        <input id="code" type="text" name="code">
-        <input type="submit" value="Активировать">
-    </form>
+<!--    <form action="" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <label for="username">Имя пользователя (логин): </label>-->
+<!--        <input id="username" type="text" name="username">-->
+<!--        <label for="code">Одноразовый код для активации: </label>-->
+<!--        <input id="code" type="text" name="code">-->
+<!--        <input type="submit" value="Активировать">-->
+<!--    </form>-->
+
+  <form method="post">
+    {% csrf_token %}
+      <input type="text" name="otp_code" placeholder="One-Time Password" required>
+      <button type="submit">Confirm</button>
+      {% if error %}
+      <p style='color:red;'>{{error}}</p>
+      {% endif %}
+  </form>
+
 {% endblock content %}

@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 
 class AdsList(ListView):
     model = Ads
-    ordering = 'title'
+    ordering = '-created_at'
     template_name = 'ads.html'
     context_object_name = 'ads'
     paginate_by = 2

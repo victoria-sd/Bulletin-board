@@ -11,6 +11,7 @@ def ad_created(instance, created, **kwargs): #новостная рассылк�
     if not created:
         return
 
+    all_users = User.objects.all()
     subject = f'Новое объявление'
 
     text_content = (
@@ -26,18 +27,31 @@ def ad_created(instance, created, **kwargs): #новостная рассылк�
         f'Ссылка на объявление</a>'
     )
 
-    msg = EmailMultiAlternatives(subject, text_content, None, [User.email])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    for user in all_users:
+        msg = EmailMultiAlternatives(subject, text_content, None, [user.email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
 
-@receiver(post_save, sender=Response)
+@receiver(post_save, sender=Response) #уведомление на почту автора о новом отклике на его объявление
 def notification_about_response(sender, instance, created, **kwargs):
     if created:
         email = instance.ad.author.email
         send_mail(
-            subject='Новый отзыв!',
-            message=f'На ваше объявление {instance.ad} оставили новый отзыв!: {instance.text}',
+            subject='Новый отклик!',
+            message=f'На ваше объявление "{instance.ad.title}" оставили новый отклик!: "{instance.text}"',
+            from_email=None,
+            recipient_list=[email],
+        )
+
+
+@receiver(post_save, sender=Response) #уведомление автору отклика о том, что отклик принят
+def response_status_approved(sender, instance, **kwargs):
+    if instance.status == True:
+        email = instance.author.email
+        send_mail(
+            subject='Отклик принят!',
+            message=f'Автор данного объявления: "{instance.ad.title}" принял ваш отклик: "{instance.text}"',
             from_email=None,
             recipient_list=[email],
         )

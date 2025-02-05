@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Approve response
+{% endblock title %}
+
+{% block content %}
+  <h1>Принять комментарий</h1>
+  <p>Вы уверены, что хотите принять комментарий:</p>
+  <p>"{{ response.text }}"</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Принять</button>
+    <a href="{% url 'response' %}">Отмена</a>
+  </form>
+{% endblock %}

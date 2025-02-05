@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.functions import Now
 from django.urls import reverse
 from tinymce.models import HTMLField
 import secrets
@@ -23,6 +24,7 @@ class Ads(models.Model):  #объявления
     category = models.CharField(max_length=12, choices=VARIANTS, default='tank')
     title = models.CharField(max_length=64)
     text = HTMLField()
+    created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.title}: {self.text[:20]}'
@@ -33,9 +35,13 @@ class Ads(models.Model):  #объявления
 
 class Response(models.Model):  #отклики на объявления
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    ad = models.ForeignKey(Ads, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ads, on_delete=models.CASCADE, related_name='response')
     text = models.TextField()
     status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Комментарий от {self.author.username} на объявление: {self.ad.title}'
 
 
 class EmailKey(models.Model):
@@ -47,4 +53,4 @@ class EmailKey(models.Model):
 
     @staticmethod
     def generate_code():
-        return secrets.token_urlsafe(32)
+        return secrets.token_urlsafe(6)

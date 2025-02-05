@@ -1,0 +1,65 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+
+    <h1>Профиль пользователя</h1>
+    <p>Имя: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <h3>
+        Новые отклики на ваши объявления
+    </h3>
+
+
+    <form method="get">
+        <label for='ads'>Filter by Ad: </label>
+        <select name="ad" id='ads'>
+            <option value="">All ads</option>
+            {% for ad in ads %}
+                <option value="{{ad.id}}" {% if selected_ad_id == ad.id %} selected {% endif %}>{{ ad.title }}</option>
+            {% endfor %}
+        </select>
+            <button type="submit">Filter</button>
+    </form>
+
+
+    {% if responses %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Объявление</th>
+                    <th>Автор</th>
+                    <th>Отклик</th>
+                    <th>Создано</th>
+                    <th>Статус</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+             <tbody>
+                 {% for response in responses %}
+<!--                     <tr class="{% if response.is_approved %}accepted{% endif %}">-->
+                     <tr>
+                         <td>{{ response.ad.title }}</td>
+                         <td>{{ response.author.username }}</td>
+                         <td>{{ response.text }}</td>
+                         <td>{{ response.created_at }}</td>
+                         <td>{% if response.status %}Принят{% else %} В ожидании {% endif %}</td>
+                         <td>{% if request.user %}
+                                <a href="{% url 'delete_response' response.id %}">Удалить</a>
+                             {% endif %}
+                             {% if request.user and not response.approved %}
+                                <a href="{% url 'approve_response' response.id %}">Принять</a>
+                             {% endif %}
+                         </td>
+                     </tr>
+                 {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No responses yet.</p>
+    {% endif %}
+{% endblock content %}

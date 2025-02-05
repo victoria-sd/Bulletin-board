@@ -14,7 +14,7 @@ Ads
    {% if ads %}
        {% for ad in ads %}
        <p style="text-align: left;"><span style="text-decoration: underline;">Заголовок</span>: {{ ad.title }}.</p>
-       <p style="text-align: left;"><span style="text-decoration: underline;">Описание</span>: {{ ad.text|truncatewords:20|safe }}</p>
+       <p style="text-align: left;"><span style="text-decoration: underline;">Описание</span>: {{ ad.text|safe }}</p>
        <hr>
        {% endfor %}
    {% else %}
